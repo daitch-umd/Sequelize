@@ -31,106 +31,83 @@ async function windowActions() {
     });
     
     console.table(selectedMeals);
+    console.log(selectedMeals[1].meal_id);
 
-    var chart = new CanvasJS.Chart("chartContainer", {
+    cholesterol = [];
+    sodium = [];
+    carbs = [];
+    protein = [];
+    fat = [];
+    selectedMeals.forEach((meal) => {
+        cholesterol.push({label: meal.meal_name, y:meal.cholesterol});
+        sodium.push({label: meal.meal_name, y:meal.sodium});
+        carbs.push({label: meal.meal_name, y:meal.carbs});
+        protein.push({label: meal.meal_name, y:meal.protein});
+        fat.push({label: meal.meal_name, y:meal.fat});
+    });
+
+    let chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
         title:{
-            text: "Evening Sales in a Restaurant"
+            text: "Random Meal Macros"
         },
         axisX: {
-            valueFormatString: "DDD"
+            //valueFormatString: "string"
         },
         axisY: {
-            prefix: "$"
+            
         },
         toolTip: {
             shared: true
         },
         legend:{
             cursor: "pointer",
+		    itemclick: toggleDataSeries
         },
         data: [{
             type: "stackedBar",
-            name: "Meals",
+            name: "Cholesterol",
             showInLegend: "true",
-            xValueFormatString: "DD, MMM",
-            yValueFormatString: "$#,##0",
-            dataPoints: [
-                { x: new Date(2017, 0, 30), y: 56 },
-                { x: new Date(2017, 0, 31), y: 45 },
-                { x: new Date(2017, 1, 1), y: 71 },
-                { x: new Date(2017, 1, 2), y: 41 },
-                { x: new Date(2017, 1, 3), y: 60 },
-                { x: new Date(2017, 1, 4), y: 75 },
-                { x: new Date(2017, 1, 5), y: 98 }
-            ]
+            dataPoints: cholesterol
         },
         {
             type: "stackedBar",
-            name: "Snacks",
+            name: "Sodium",
             showInLegend: "true",
-            xValueFormatString: "DD, MMM",
-            yValueFormatString: "$#,##0",
-            dataPoints: [
-                { x: new Date(2017, 0, 30), y: 86 },
-                { x: new Date(2017, 0, 31), y: 95 },
-                { x: new Date(2017, 1, 1), y: 71 },
-                { x: new Date(2017, 1, 2), y: 58 },
-                { x: new Date(2017, 1, 3), y: 60 },
-                { x: new Date(2017, 1, 4), y: 65 },
-                { x: new Date(2017, 1, 5), y: 89 }
-            ]
+            dataPoints: sodium
         },
         {
             type: "stackedBar",
-            name: "Drinks",
+            name: "Carbs",
             showInLegend: "true",
-            xValueFormatString: "DD, MMM",
-            yValueFormatString: "$#,##0",
-            dataPoints: [
-                { x: new Date(2017, 0, 30), y: 48 },
-                { x: new Date(2017, 0, 31), y: 45 },
-                { x: new Date(2017, 1, 1), y: 41 },
-                { x: new Date(2017, 1, 2), y: 55 },
-                { x: new Date(2017, 1, 3), y: 80 },
-                { x: new Date(2017, 1, 4), y: 85 },
-                { x: new Date(2017, 1, 5), y: 83 }
-            ]
+            dataPoints: carbs
         },
         {
             type: "stackedBar",
-            name: "Dessert",
+            name: "Protein",
             showInLegend: "true",
-            xValueFormatString: "DD, MMM",
-            yValueFormatString: "$#,##0",
-            dataPoints: [
-                { x: new Date(2017, 0, 30), y: 61 },
-                { x: new Date(2017, 0, 31), y: 55 },
-                { x: new Date(2017, 1, 1), y: 61 },
-                { x: new Date(2017, 1, 2), y: 75 },
-                { x: new Date(2017, 1, 3), y: 80 },
-                { x: new Date(2017, 1, 4), y: 85 },
-                { x: new Date(2017, 1, 5), y: 105 }
-            ]
+            dataPoints: protein
         },
         {
             type: "stackedBar",
-            name: "Takeaway",
+            name: "Fat",
             showInLegend: "true",
-            xValueFormatString: "DD, MMM",
-            yValueFormatString: "$#,##0",
-            dataPoints: [
-                { x: new Date(2017, 0, 30), y: 52 },
-                { x: new Date(2017, 0, 31), y: 55 },
-                { x: new Date(2017, 1, 1), y: 20 },
-                { x: new Date(2017, 1, 2), y: 35 },
-                { x: new Date(2017, 1, 3), y: 30 },
-                { x: new Date(2017, 1, 4), y: 45 },
-                { x: new Date(2017, 1, 5), y: 25 }
-            ]
+            dataPoints: fat
         }]
     });
     chart.render();
+
+    function toggleDataSeries(e) {
+        if(typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+            e.dataSeries.visible = false;
+        }
+        else {
+            e.dataSeries.visible = true;
+        }
+        chart.render();
+    }
+
+    populateRestaurant();
 }
 
 window.onload = windowActions;

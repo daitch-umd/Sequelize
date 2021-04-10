@@ -40,4 +40,4 @@ async function windowActions() {
     populateRestaurant();
 }
 
-window.onload = windowActions;
+//window.onload = windowActions;
