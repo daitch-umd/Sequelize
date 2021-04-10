@@ -16,7 +16,7 @@ async function populateRestaurant() {
 
 async function getMeals() {
     console.log('data request');
-    const diningRequest = await fetch('/api/meals');
+    const diningRequest = await fetch('/api/wholeMeals');
     const diningData = await diningRequest.json();
     return diningData;
 }
@@ -29,12 +29,15 @@ async function getBasicData() {
     const cat = localStorage.getItem('myCat');
 }
 
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 async function windowActions() {
     console.log('loaded window');
-    const meals = await getMeals();
-    console.table(meals);
     populateRestaurant();
-    
 }
 
 window.onload = windowActions;
